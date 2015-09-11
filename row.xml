@@ -1,9 +1,9 @@
 <interface>
-    <object class="GtkImage" id="icon_running">
+    <!--<object class="GtkImage" id="icon_running">-->
+        <!--<property name="icon-name">media-pause-symbolic</property>-->
+    <!--</object>-->
+    <object class="GtkImage" id="start_stop_image">
         <property name="icon-name">media-playback-pause-symbolic</property>
-    </object>
-    <object class="GtkImage" id="icon_stopped">
-        <property name="icon-name">media-playback-stop-symbolic</property>
     </object>
     <object class="GtkListBoxRow" id="row">
         <child>
@@ -20,7 +20,7 @@
                 </child>
                 <child>
                     <object class="GtkButton" id="start_stop_button">
-                        <property name="image">icon_running</property>
+                        <property name="image">start_stop_image</property>
                         <!--<property name="label">Start</property>-->
                     </object>
                     <packing>

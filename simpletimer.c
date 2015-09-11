@@ -3,6 +3,9 @@
 #include <gtk/gtk.h>
 #include <glib.h>
 
+char* ICON_RUNNING = "media-playback-pause-symbolic";
+char* ICON_STOPPED = "media-playback-start-symbolic";
+
 GtkListBox* listbox;
 GHashTable* table;
 guint timeout_id;
@@ -21,10 +24,32 @@ void shutdown(GtkWindow* window, GdkEvent* event, gpointer user_data) {
     gtk_main_quit();
 }
 
+void start_stop_button_clicked(GtkWidget* button, gpointer user_data) {
+    GObject* box;
+    GObject* row_object;
+    g_object_get(button, "parent", &box, NULL);
+    g_object_get(box, "parent", &row_object, NULL);
+    GtkWidget* row = GTK_WIDGET(row_object);
+    RowData* row_data = (RowData*) g_hash_table_lookup(table, row);
+
+    GObject* start_stop_image = gtk_builder_get_object(row_data->row_builder, "start_stop_image");
+
+    if (row_data->is_running == 1){
+        g_object_set(start_stop_image, "icon-name", ICON_STOPPED, NULL);
+        row_data->is_running = 0;
+    } else {
+        g_object_set(start_stop_image, "icon-name", ICON_RUNNING, NULL);
+        row_data->is_running = 1;
+    }
+}
+
 void add_timer(GtkButton* button, gpointer should_be_countdown) {
     GtkBuilder* row_builder = gtk_builder_new_from_file("row.xml");
 
     GtkWidget* row = GTK_WIDGET(gtk_builder_get_object(row_builder, "row"));
+
+    GtkWidget* start_stop_button = GTK_WIDGET(gtk_builder_get_object(row_builder, "start_stop_button"));
+    g_signal_connect(start_stop_button, "clicked", G_CALLBACK(start_stop_button_clicked), NULL);
 
     GtkWidget* label = GTK_WIDGET(gtk_builder_get_object(row_builder, "label"));
     gtk_widget_override_font(label, pango_font_description_from_string("Cantarell 18"));
@@ -36,7 +61,10 @@ void add_timer(GtkButton* button, gpointer should_be_countdown) {
     row_data->row_builder = row_builder;
     row_data->tenths_elapsed = 0;
     row_data->is_running = 1;
-    //row_data->is_countdown = 0;
+
+    GObject* start_stop_image = gtk_builder_get_object(row_builder, "start_stop_image");
+    g_object_set(start_stop_image, "icon-name", ICON_RUNNING, NULL);
+
     row_data->is_countdown = *((int*) should_be_countdown);
     row_data->text = malloc(10 * sizeof(char));
     g_hash_table_insert(table, row, row_data);
