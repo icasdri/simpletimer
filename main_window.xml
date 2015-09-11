@@ -1,0 +1,25 @@
+<interface>
+    <object class="GtkImage" id="icon_add_stopwatch">
+        <property name="icon-name">list-add-symbolic</property>
+    </object>
+    <object class="GtkWindow" id="main_window">
+        <child type="titlebar">
+            <object class="GtkHeaderBar" id="hb">
+                <property name="title">Simple Timer</property>
+                <property name="show-close-button">true</property>
+                <child>
+                    <object class="GtkButton" id="add_stopwatch_button">
+                        <property name="image">icon_add_stopwatch</property>
+                    </object>
+                </child>
+            </object>
+        </child>
+        <child>
+            <object class="GtkListBox" id="list">
+                <property name="height-request">170</property>
+                <property name="width-request">120</property>
+                <!--<property name="selection_mode">browse</property>-->
+            </object>
+        </child>
+    </object>
+</interface>
