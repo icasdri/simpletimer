@@ -71,6 +71,26 @@ void add_timer(GtkButton* button, gpointer should_be_countdown) {
     gtk_list_box_prepend(listbox, row);
 }
 
+void row_selected(GtkListBox* widget, GtkListBoxRow* row, gpointer raw_main_builder) {
+    GtkBuilder* builder = (GtkBuilder*) raw_main_builder;
+    if (row == NULL) {
+        gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(builder, "delete_button")), FALSE);
+    } else {
+        gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(builder, "delete_button")), TRUE);
+    }
+}
+
+void delete_timer(GtkButton* delete_button, gpointer user_data) {
+    GtkWidget* row = GTK_WIDGET(gtk_list_box_get_selected_row(listbox));
+    if (row != NULL) {
+        RowData* row_data = (RowData*) g_hash_table_lookup(table, row);
+        g_hash_table_remove(table, row);
+        g_free(row_data);
+        gtk_widget_destroy(row);
+        g_object_unref(row);
+    }
+}
+
 void destroy_key(gpointer raw_row) {
 }
 
@@ -119,9 +139,14 @@ int main(int argc, char* argv[]) {
     GtkBuilder* builder = gtk_builder_new_from_file("main_window.xml");
     GtkWidget* window = GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
     g_signal_connect(window, "delete-event", G_CALLBACK(shutdown), NULL);
+
     GtkWidget* add_stopwatch_button = GTK_WIDGET(gtk_builder_get_object(builder, "add_stopwatch_button"));
     g_signal_connect(add_stopwatch_button, "clicked", G_CALLBACK(add_timer), &opt_stopwatch);
+    GtkWidget* delete_button = GTK_WIDGET(gtk_builder_get_object(builder, "delete_button"));
+    g_signal_connect(delete_button, "clicked", G_CALLBACK(delete_timer), NULL);
+
     listbox = GTK_LIST_BOX(gtk_builder_get_object(builder, "list"));
+    g_signal_connect(listbox, "row_selected", G_CALLBACK(row_selected), builder);
 
     table = g_hash_table_new(NULL, NULL);
 
@@ -131,6 +156,7 @@ int main(int argc, char* argv[]) {
     
     g_object_unref(window);
     g_object_unref(add_stopwatch_button);
+    g_object_unref(delete_button);
 
     gtk_main();
 }
