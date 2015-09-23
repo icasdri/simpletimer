@@ -21,6 +21,7 @@
 *.dylib
 
 # Executables
+simpletimer
 *.exe
 *.out
 *.app
