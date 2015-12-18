@@ -20,6 +20,8 @@ From there, the standard `make` and `make install` build and installation proces
 Note: this program is built with compiler flags that put correctness and security first (such as those for aggressive warnings, stack protectors, and positional independence). These will fail the build on any number of warnings or errors -- as such the `CFLAGS` line of the `Makefile` may need to be changed to something different if these flags become too aggressive during development or otherwise.
 
 ## Packages
-Currently, packages only exist for Arch Linux in the AUR --> [simpletimer-git](https://aur.archlinux.org/packages/simpletimer-git/)
+Currently, packages only exist for Arch Linux in the AUR: [simpletimer-git](https://aur.archlinux.org/packages/simpletimer-git/).
+
 However, users on other distributions may simply `make` `make install` get the program installed: the dependencies are very minimal.
+
 Additional packages are welcome: please let me know if you package **simpletimer** for a different distribution!
