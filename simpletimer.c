@@ -1,3 +1,5 @@
+#define UNUSED __attribute__((unused))
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <gtk/gtk.h>
@@ -18,13 +20,13 @@ typedef struct {
     char* text;
 } RowData;
 
-void shutdown(GtkWindow* window, GdkEvent* event, gpointer user_data) {
+void shutdown(UNUSED GtkWindow* window, UNUSED GdkEvent* event, UNUSED gpointer user_data) {
     printf("Shutting down!\n");
     g_object_unref(listbox);
     gtk_main_quit();
 }
 
-void start_stop_button_clicked(GtkWidget* button, gpointer user_data) {
+void start_stop_button_clicked(GtkWidget* button, UNUSED gpointer user_data) {
     GObject* box;
     GObject* row_object;
     g_object_get(button, "parent", &box, NULL);
@@ -43,7 +45,7 @@ void start_stop_button_clicked(GtkWidget* button, gpointer user_data) {
     }
 }
 
-void add_timer(GtkButton* button, gpointer should_be_countdown) {
+void add_timer(UNUSED GtkButton* button, gpointer should_be_countdown) {
     GtkBuilder* row_builder = gtk_builder_new_from_resource("/org/icasdri/simpletimer/row.xml");
 
     GtkWidget* row = GTK_WIDGET(gtk_builder_get_object(row_builder, "row"));
@@ -71,7 +73,7 @@ void add_timer(GtkButton* button, gpointer should_be_countdown) {
     gtk_list_box_prepend(listbox, row);
 }
 
-void row_selected(GtkListBox* widget, GtkListBoxRow* row, gpointer raw_main_builder) {
+void row_selected(UNUSED GtkListBox* widget, GtkListBoxRow* row, gpointer raw_main_builder) {
     GtkBuilder* builder = (GtkBuilder*) raw_main_builder;
     if (row == NULL) {
         gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(builder, "delete_button")), FALSE);
@@ -80,7 +82,7 @@ void row_selected(GtkListBox* widget, GtkListBoxRow* row, gpointer raw_main_buil
     }
 }
 
-void delete_timer(GtkButton* delete_button, gpointer user_data) {
+void delete_timer(UNUSED GtkButton* delete_button, UNUSED gpointer user_data) {
     GtkWidget* row = GTK_WIDGET(gtk_list_box_get_selected_row(listbox));
     if (row != NULL) {
         RowData* row_data = (RowData*) g_hash_table_lookup(table, row);
@@ -89,12 +91,6 @@ void delete_timer(GtkButton* delete_button, gpointer user_data) {
         gtk_widget_destroy(row);
         g_object_unref(row);
     }
-}
-
-void destroy_key(gpointer raw_row) {
-}
-
-void destroy_value(gpointer raw_row_data) {
 }
 
 void gen_label_text(int tenths, char* text) {
@@ -107,8 +103,7 @@ void gen_label_text(int tenths, char* text) {
     }
 }
 
-void process_row(gpointer raw_row, gpointer raw_row_data, gpointer user_data) {
-    GtkWidget* row = (GtkWidget*) raw_row;
+void process_row(UNUSED gpointer raw_row, gpointer raw_row_data, UNUSED gpointer user_data) {
     RowData* row_data = (RowData*) raw_row_data;
 
     if (row_data->is_running == 1) {
@@ -126,14 +121,13 @@ void process_row(gpointer raw_row, gpointer raw_row_data, gpointer user_data) {
     }
 }
 
-int timeout_callback(gpointer user_data) {
+int timeout_callback(UNUSED gpointer user_data) {
     g_hash_table_foreach(table, process_row, NULL);
     return 1;
 }
 
 int main(int argc, char* argv[]) {
     int opt_stopwatch = 0;
-    int opt_countdown = 1;
     gtk_init(&argc, &argv);
 
     GtkBuilder* builder = gtk_builder_new_from_resource("/org/icasdri/simpletimer/main_window.xml");
