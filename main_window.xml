@@ -30,7 +30,6 @@
             <object class="GtkListBox" id="list">
                 <property name="height-request">180</property>
                 <property name="width-request">270</property>
-                <!--<property name="selection_mode">browse</property>-->
             </object>
         </child>
     </object>
