@@ -13,5 +13,6 @@ simpletimer: simpletimer.c resources.c
 resources.c: resources.gresource.xml main_window.xml row.xml
 	glib-compile-resources $< --generate-source
 
-install: simpletimer
+install: simpletimer simpletimer.desktop
 	install -Dm755 simpletimer "$(DESTDIR)/bin/simpletimer"
+	install -Dm644 simpletimer.desktop "$(DESTDIR)/share/applications/simpletimer.desktop"

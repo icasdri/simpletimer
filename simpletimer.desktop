@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Simple Timer
+Comment=Lightweight timer
+Categories=GTK;Utilities;Clock;
+Exec=simpletimer
+Icon=gnome-clocks
+Terminal=false
+Type=Application
