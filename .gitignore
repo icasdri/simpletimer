@@ -5,6 +5,7 @@
 *.elf
 
 *.swp
+resources.c
 
 # Precompiled Headers
 *.gch

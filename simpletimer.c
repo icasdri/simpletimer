@@ -44,7 +44,7 @@ void start_stop_button_clicked(GtkWidget* button, gpointer user_data) {
 }
 
 void add_timer(GtkButton* button, gpointer should_be_countdown) {
-    GtkBuilder* row_builder = gtk_builder_new_from_file("row.xml");
+    GtkBuilder* row_builder = gtk_builder_new_from_resource("/org/icasdri/simpletimer/row.xml");
 
     GtkWidget* row = GTK_WIDGET(gtk_builder_get_object(row_builder, "row"));
 
@@ -136,7 +136,7 @@ int main(int argc, char* argv[]) {
     int opt_countdown = 1;
     gtk_init(&argc, &argv);
 
-    GtkBuilder* builder = gtk_builder_new_from_file("main_window.xml");
+    GtkBuilder* builder = gtk_builder_new_from_resource("/org/icasdri/simpletimer/main_window.xml");
     GtkWidget* window = GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
     g_signal_connect(window, "delete-event", G_CALLBACK(shutdown), NULL);
 
