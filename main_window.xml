@@ -2,6 +2,9 @@
     <object class="GtkImage" id="icon_add_stopwatch">
         <property name="icon-name">list-add-symbolic</property>
     </object>
+    <object class="GtkImage" id="icon_delete_symbolic">
+        <property name="icon-name">user-trash-symbolic</property>
+    </object>
     <object class="GtkWindow" id="main_window">
         <child type="titlebar">
             <object class="GtkHeaderBar" id="hb">
@@ -12,12 +15,20 @@
                         <property name="image">icon_add_stopwatch</property>
                     </object>
                 </child>
+                <child>
+                    <object class="GtkButton" id="delete_button">
+                        <property name="image">icon_delete_symbolic</property>
+                    </object>
+                    <packing>
+                        <property name="pack-type">end</property>
+                    </packing>
+                </child>
             </object>
         </child>
         <child>
             <object class="GtkListBox" id="list">
-                <property name="height-request">170</property>
-                <property name="width-request">120</property>
+                <property name="height-request">180</property>
+                <property name="width-request">270</property>
                 <!--<property name="selection_mode">browse</property>-->
             </object>
         </child>
