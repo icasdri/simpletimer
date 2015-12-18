@@ -7,7 +7,11 @@
         <child>
             <object class="GtkBox">
                 <child type="center">
-                    <object class="GtkLabel" id="label"></object>
+                    <object class="GtkLabel" id="label">
+                        <style>
+                            <class name="timer-label"/>
+                        </style>
+                    </object>
                 </child>
                 <child>
                     <object class="GtkButton" id="start_stop_button">

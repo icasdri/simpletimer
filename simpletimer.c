@@ -54,7 +54,6 @@ void add_timer(UNUSED GtkButton* button, gpointer should_be_countdown) {
     g_signal_connect(start_stop_button, "clicked", G_CALLBACK(start_stop_button_clicked), NULL);
 
     GtkWidget* label = GTK_WIDGET(gtk_builder_get_object(row_builder, "label"));
-    gtk_widget_override_font(label, pango_font_description_from_string("Cantarell 18"));
     gtk_label_set_text(GTK_LABEL(label), "0:00 ");
 
     gtk_widget_show_all(row);
@@ -138,6 +137,14 @@ int main(int argc, char* argv[]) {
     g_signal_connect(add_stopwatch_button, "clicked", G_CALLBACK(add_timer), &opt_stopwatch);
     GtkWidget* delete_button = GTK_WIDGET(gtk_builder_get_object(builder, "delete_button"));
     g_signal_connect(delete_button, "clicked", G_CALLBACK(delete_timer), NULL);
+
+    GtkCssProvider* css_provider = gtk_css_provider_new();
+    gtk_style_context_add_provider_for_screen(
+            gdk_display_get_default_screen(gdk_display_get_default()),
+            GTK_STYLE_PROVIDER(css_provider),
+            GTK_STYLE_PROVIDER_PRIORITY_APPLICATION
+    );
+    gtk_css_provider_load_from_data(css_provider, ".timer-label { font: Cantarell 18; }", -1, NULL);
 
     listbox = GTK_LIST_BOX(gtk_builder_get_object(builder, "list"));
     g_signal_connect(listbox, "row_selected", G_CALLBACK(row_selected), builder);
