@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include <gtk/gtk.h>
 #include <glib.h>
 
@@ -12,11 +13,19 @@ guint timeout_id;
 
 typedef struct {
     GtkBuilder* row_builder;
-    int tenths_elapsed;
     int is_running; // 1 is running. 0 is not.
     int is_countdown; // 0 is stopwatch. 1 is countdown.
+    long time_started;  // in milliseconds since epoch
+    long started_offset;  // in milliseconds
+    long countdown_target; // in milliseconds
     char* text;
 } RowData;
+
+long now() {
+    struct timespec current_time_spec;
+    clock_gettime(CLOCK_MONOTONIC, &current_time_spec);
+    return current_time_spec.tv_sec + (current_time_spec.tv_nsec / 1000000);
+}
 
 void shutdown(GtkWindow* window, GdkEvent* event, gpointer user_data) {
     printf("Shutting down!\n");
@@ -36,9 +45,11 @@ void start_stop_button_clicked(GtkWidget* button, gpointer user_data) {
 
     if (row_data->is_running == 1){
         g_object_set(start_stop_image, "icon-name", ICON_STOPPED, NULL);
+        row_data->started_offset = now() - row_data->time_started;
         row_data->is_running = 0;
     } else {
         g_object_set(start_stop_image, "icon-name", ICON_RUNNING, NULL);
+        row_data->time_started = now();
         row_data->is_running = 1;
     }
 }
@@ -59,7 +70,7 @@ void add_timer(GtkButton* button, gpointer should_be_countdown) {
 
     RowData* row_data = malloc(sizeof(RowData));
     row_data->row_builder = row_builder;
-    row_data->tenths_elapsed = 0;
+    row_data->time_started = now();
     row_data->is_running = 1;
 
     GObject* start_stop_image = gtk_builder_get_object(row_builder, "start_stop_image");
@@ -97,9 +108,9 @@ void destroy_key(gpointer raw_row) {
 void destroy_value(gpointer raw_row_data) {
 }
 
-void gen_label_text(int tenths, char* text) {
-    int seconds = (tenths / 10) % 60;
-    int minutes = (tenths / 10) / 60;
+void gen_label_text(long milli, char* text) {
+    int seconds = (milli / 1000) % 60;
+    int minutes = (milli / 1000) / 60;
     if(seconds < 10) {
         sprintf(text, "%d:0%d ", minutes, seconds);
     } else {
@@ -112,16 +123,17 @@ void process_row(gpointer raw_row, gpointer raw_row_data, gpointer user_data) {
     RowData* row_data = (RowData*) raw_row_data;
 
     if (row_data->is_running == 1) {
+        long elapsed = now() - row_data->time_started + row_data->started_offset;
+        long milli;
         if (row_data->is_countdown == 0) {
-            row_data->tenths_elapsed += 1;
+            milli = elapsed;
         } else {
-            if (row_data->tenths_elapsed > 0) {
-                row_data->tenths_elapsed -= 1;
-            } else {
+            milli = row_data->countdown_target - elapsed;
+            if (milli < 0) {
                 return;
             }
         }
-        gen_label_text(row_data->tenths_elapsed, row_data->text);
+        gen_label_text(milli, row_data->text);
         gtk_label_set_text(GTK_LABEL(gtk_builder_get_object(row_data->row_builder, "label")), row_data->text);
     }
 }
