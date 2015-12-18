@@ -1,7 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
-    <!--<object class="GtkImage" id="icon_running">-->
-        <!--<property name="icon-name">media-pause-symbolic</property>-->
-    <!--</object>-->
     <object class="GtkImage" id="start_stop_image">
         <property name="icon-name">media-playback-pause-symbolic</property>
     </object>
@@ -9,19 +7,11 @@
         <child>
             <object class="GtkBox">
                 <child type="center">
-                    <object class="GtkLabel" id="label">
-
-                    </object>
-                    <!--<packing>-->
-                        <!--<property name="expand">true</property>-->
-                        <!--<property name="fill">true</property>-->
-                        <!--<property name="padding">5</property>-->
-                    <!--</packing>-->
+                    <object class="GtkLabel" id="label"></object>
                 </child>
                 <child>
                     <object class="GtkButton" id="start_stop_button">
                         <property name="image">start_stop_image</property>
-                        <!--<property name="label">Start</property>-->
                     </object>
                     <packing>
                         <property name="pack_type">end</property>
