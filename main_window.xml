@@ -19,6 +19,7 @@
                 <child>
                     <object class="GtkButton" id="delete_button">
                         <property name="image">icon_delete_symbolic</property>
+                        <property name="sensitive">false</property>
                     </object>
                     <packing>
                         <property name="pack-type">end</property>
