@@ -1,5 +1,6 @@
 # simpletimer can be compiled with either gcc or clang (compatible with gcc flags)
 CC=gcc
+#CC=tcc
 #CC=clang 
 DESTDIR=/usr
 GTKFLAGS=`pkg-config --cflags --libs gtk+-3.0`
