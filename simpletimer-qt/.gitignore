@@ -1,0 +1,4 @@
+.qmake.stash
+*.qmake
+moc_*
+ui_*.h
