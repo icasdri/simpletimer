@@ -1,11 +1,13 @@
+simpletimer
+
+# Temporary files
+*.swp
+
 # Object files
 *.o
 *.ko
 *.obj
 *.elf
-
-*.swp
-resources.c
 
 # Precompiled Headers
 *.gch
@@ -24,7 +26,6 @@ resources.c
 *.dylib
 
 # Executables
-simpletimer
 *.exe
 *.out
 *.app
